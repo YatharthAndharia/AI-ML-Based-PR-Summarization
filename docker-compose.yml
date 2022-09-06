@@ -1,0 +1,104 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - /home/yatharthandharia/docker/postgres:/var/lib/postgresql/data
+      - ./init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+    networks:
+      - application
+    container_name: postgres
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgres-test:
+    image: postgres
+    ports:
+      - '5431:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    networks:
+      - application
+    volumes:
+      - /home/yatharthandharia/docker/postgres-test:/var/lib/postgresql/data
+    restart: always
+    container_name: postgres-test
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api:v1
+    ports:
+      - '3000:3000'
+    tty: true
+    volumes:
+      - './:/app'
+    networks:
+      - application
+    container_name: api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: ['/bin/sh', '-c']
+    environment:
+      - INTEGRATION_TEST_HOST_URL= http://localhost:3002
+    command:
+      - |
+        npm i
+        npm run sequelize db:migrate
+        npm run sequelize db:seed:all
+        nodemon --legacy-watch src/server.js
+
+  api-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api-test:v1
+    ports:
+      - '3002:3000'
+    tty: true
+    volumes:
+      - './:/app'
+    networks:
+      - application
+    container_name: api-test
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    entrypoint: ['/bin/sh', '-c']
+    environment:
+      - NODE_ENV=test
+      - DB_HOST=postgres-test
+      - DB_DATABASE=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - INTEGRATION_TEST_HOST_URL= http://localhost:3002
+    command:
+      - |
+        npm i
+        npm run sequelize db:migrate:undo:all
+        npm run sequelize db:migrate
+        npm run sequelize db:seed:all
+        nodemon --legacy-watch src/server.js
+
+networks:
+  application:
+    driver: bridge
