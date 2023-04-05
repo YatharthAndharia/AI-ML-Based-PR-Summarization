@@ -10,4 +10,4 @@ const requestHelper = (req, res, next) => {
   };
 };
 
-module.exports = { requestHelper };
+module.exports = { helper:()=>requestHelper };

@@ -5,9 +5,10 @@ const { logger } = require('../log/index.js');
 const { routes } = require('./routes/index.js');
 const { configuration } = require('./config/index');
 
+config();
+
 app.use(routes);
 
-config();
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {

@@ -65,7 +65,7 @@ services:
         npm i
         npm run sequelize db:migrate
         npm run sequelize db:seed:all
-        nodemon --legacy-watch src/server.js
+        nodemon src/server.js
 
   api-test:
     build:
