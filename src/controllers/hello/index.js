@@ -2,12 +2,13 @@ const { default: fetch } = require('node-fetch');
 const {Octokit}=require('octokit')
 const { Hello } = require('../../services/index.js');
 const { MESSAGES } = require('../../utils/constant.js');
-const {Configuration,OpenAIApi}=require('openai')
+const {Configuration,OpenAIApi}=require('openai');
+const { configuration } = require('../../config/index.js');
 
 const octokit = new Octokit({ 
   auth: process.env.GIT_TOKEN,
 });
-const apiKey="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"
+const apiKey=configuration.openai_apikey
 class HelloController {
   static async hello(req, res) {
     const data = await octokit.request("GET /repos/YatharthAndharia/TextSummary/pulls", {});
