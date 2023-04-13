@@ -1,35 +1,30 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const models = require('../../../database/models');
-const { VerifySignup } = require('../../middlewares/index.js');
+const {default:fetch}=require('node-fetch')
+const { configuration } = require("../../config");
+const { User } = require("../../infrastructure/repositories/user-dao");
+const { createRepos } = require('../repo');
 
-class Auth {
-  static async login(req) {
-    const { userName, password } = req.body;
-    const user = await models.User.findOne({
-      where: { userName }
-    });
 
-    if (!user) return false;
-    if (await bcrypt.compare(password, user.password)) {
-      return jwt.sign(userName, process.env.JWT_SECRET);
-    }
-    return false;
+const getAccessToken=async (code)=>{
+  const params=`?client_id=${configuration.client_id}&client_secret=${configuration.client_secret}&code=${code}`;
+  const response=await fetch(`${configuration.github_url}/login/oauth/access_token${params}`,{
+      method:"POST",
+      headers:{
+          "Accept":"application/json"
+      }
+  })
+  const res=await response.json();
+  return res.access_token
+}
+const registerUser=async ({data})=>{
+  let user=await User.get({where:{id:data.id}})
+  if(!user){
+    user=await User.create({data})
+    await createRepos({user,accessToken:user.dataValues.access_token})
+    delete user.dataValues.access_token
   }
-
-  static async signup(req) {
-    const res = await VerifySignup.checkDuplicateUserName(req.body.userName);
-    if (res) {
-      return false;
-    }
-
-    const usr = models.User.create({
-      userName: req.body.userName,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8)
-    });
-    return usr;
-  }
+  delete user.dataValues.access_token
+  return user
 }
 
-module.exports = { Auth };
+
+module.exports = { getAccessToken,registerUser };

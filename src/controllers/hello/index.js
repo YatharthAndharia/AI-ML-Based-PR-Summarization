@@ -16,7 +16,13 @@ class HelloController {
     const diffContent = await diffResponse.text();
     const openai=new OpenAIApi(new Configuration({apiKey}))
     const augmentedPrompts = [
-      {role:'user', content: `summarize this pull request ${diffContent}` }
+      {role:'user', content: `
+      summarize this pull request ${diffContent},
+      Format this PR with markdown.
+      Add title "PR Summary" in bold and big fonts.
+      Add new section
+      Create bullet point for New File, Update File with respective file names. Add bold style for bullet point heading.
+      Add description below each bullet point` }
     ];
     const summary = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -25,7 +31,7 @@ class HelloController {
       max_tokens: 1000
     });
     console.log(summary.data.choices[0].message.content);
-    res.json(summary.data.choices[0].message.content.toString())
+    res.json(summary.data.choices[0].message.content)
   }
 }
 

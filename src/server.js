@@ -4,10 +4,13 @@ const { app } = require('./app');
 const { logger } = require('../log/index.js');
 const { routes } = require('./routes/index.js');
 const { configuration } = require('./config/index');
+const requestHelper = require('./utils/response');
+
+app.use(requestHelper.helper());
 
 config();
-
 app.use(routes);
+
 
 
 // eslint-disable-next-line no-unused-vars

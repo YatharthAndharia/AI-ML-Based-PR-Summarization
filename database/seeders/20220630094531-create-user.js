@@ -3,8 +3,6 @@ module.exports = {
     return queryInterface.bulkInsert('Users', [
       {
         userName: 'demo',
-        password:
-          '$2a$08$c7.diWmq8sjawgFDBhynyO2DFMGFT3AYm9gYfi6BpaHMUlBqjPXzq',
         email: 'adt@example.com',
         createdAt: new Date(),
         updatedAt: new Date()

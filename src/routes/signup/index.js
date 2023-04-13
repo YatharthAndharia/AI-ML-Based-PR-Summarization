@@ -1,8 +1,8 @@
 const { Router } = require('express');
-const { Auth } = require('../../controllers/index.js');
+const { signinWithGithub } = require('../../controllers/auth/index');
 
 const signupRoute = Router();
 
-signupRoute.post('/signup', Auth.signup);
+signupRoute.post('/signup', signinWithGithub);
 
 module.exports = { signupRoute };

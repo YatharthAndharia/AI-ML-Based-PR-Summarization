@@ -1,17 +1,28 @@
-const { Auth: AuthService } = require('../../services/index.js');
+const { default: fetch } = require('node-fetch');
+const jwt=require('jsonwebtoken')
+const { MESSAGES } = require('../../utils/constant.js');
+const { getAccessToken, registerUser } = require('../../services/auth/index.js');
 
-class Auth {
-  static async signup(req, res) {
-    const usr = await AuthService.signup(req);
-    if (!usr) res.status(409).json({ msg: 'User Already Exists' });
-    else res.status(200).json({ user: usr });
+  const signinWithGithub= async (req, res) =>{
+    try {
+      const accessToken=await getAccessToken(req.query.code)
+      if(accessToken)
+      {
+        const response=await fetch("https://api.github.com/user",{
+          method:"GET",
+          headers:{
+            "Authorization":`Bearer ${accessToken}`
+          }
+        })
+        const data=await response.json()
+        const user=await registerUser({data:{...data,userName:data.login,access_token:accessToken}})
+        const jwttoken=jwt.sign(user.dataValues,process.env.JWT_SECRET)
+        return res.success(MESSAGES.SUCCESS,jwttoken)
+      }
+      return res.unauthorisedError()
+    } catch (error) {
+      console.log(error);
+      return res.error(error)
+    }
   }
-
-  static async login(req, res) {
-    const token = await AuthService.login(req);
-    if (token) {
-      res.status(200).json({ msg: token });
-    } else res.status(401).json({ msg: 'Invalid Credentials' });
-  }
-}
-module.exports = { Auth };
+module.exports = { signinWithGithub };
