@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Repo,{
         foreignKey:'repo_owner'
       })
+      User.hasMany(models.Commit,{
+        foreignKey:'authorId'
+      })
     }
   }
   User.init(

@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Repo.hasMany(models.PR,{foreignKey:'repoId'})
         Repo.belongsTo(models.User,{foreignKey:'repo_owner'})
+        Repo.hasMany(models.Commit,{foreignKey:'repoId'})
     }
   }
   Repo.init(
