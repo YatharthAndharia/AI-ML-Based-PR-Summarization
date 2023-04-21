@@ -2,7 +2,7 @@ const {Octokit}=require('octokit'
 );
 const { Repo } = require('../../infrastructure/repositories/repo-dao');
 const { createWebHook } = require('../pr');
-const {createCommit}=require('../commit/index')
+const {createCommit, createCommitWebHook}=require('../commit/index')
 
 const createRepos=async ({user,accessToken})=>{
     const octokit = new Octokit({ 
@@ -13,8 +13,9 @@ const createRepos=async ({user,accessToken})=>{
     {
         // eslint-disable-next-line no-await-in-loop
         const repo=await Repo.create({data:{...(repoData.data[i]),repo_owner:user.id,raw_data:repoData.data[i]}})
-        createCommit({accessToken,owner:user.userName,repo:repoData.data[i].name,repoId:repo.dataValues.id})
+        createCommitWebHook({owner:repoData.data[i].owner.login,repo:repoData.data[i].name,accessToken})
         createWebHook({owner:repoData.data[i].owner.login,repo:repoData.data[i].name,accessToken})
+        createCommit({accessToken,owner:user.userName,repo:repoData.data[i].name,repoId:repo.dataValues.id})
     }
 }
 module.exports={createRepos}

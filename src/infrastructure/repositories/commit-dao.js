@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const models = require('../../../database/models');
 const { Dao } = require('./dao');
 
@@ -77,5 +78,11 @@ class Commit extends Dao {
       throw new Error(err);
     }
   }
+
+  static countOnDate({where}) {
+    return models.Commit.count({where:{[Op.and]:[models.sequelize.where(models.sequelize.fn('DATE_TRUNC','day',models.sequelize.col('commitDate')),{[Op.eq]:where.commitDate}),{authorId:where.authorId},]}})
+  }
 }
+
+
 module.exports = { Commit };

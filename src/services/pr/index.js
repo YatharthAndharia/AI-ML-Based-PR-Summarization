@@ -19,7 +19,7 @@ const createWebHook=async({owner,repo,accessToken})=>{
               'pull_request'
             ],
             config: {
-              url: 'https://hkdk.events/d6ajiolOOGIR',
+              url: 'https://hkdk.events/dnSQAce0fwJx',
               content_type: 'json',
               insecure_ssl: '0'
             },
