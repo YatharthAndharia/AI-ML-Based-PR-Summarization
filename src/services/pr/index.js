@@ -37,7 +37,7 @@ const createPR=async({prData})=>{
     const isExist=await PR.get({where:{repoId:prData.head.repo.id}})
     if(!isExist)
     {
-        await PR.create({data:{...prData,raw_data:prData,repoId:prData.head.repo.id}})
+        await PR.create({data:{...prData,user:prData.user.id,raw_data:prData,repoId:prData.head.repo.id}})
     }
 }
 

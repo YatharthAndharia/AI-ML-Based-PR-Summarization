@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Commit,{
         foreignKey:'userId'
       })
+      User.hasMany(models.PR,{
+        foreignKey:'user'
+      })
     }
   }
   User.init(

@@ -17,7 +17,7 @@ module.exports = {
       base:{type:Sequelize.JSON,allowNull:true},
       state:{type:Sequelize.STRING,allowNull:false},
       repoId:{type:Sequelize.INTEGER,allowNull:false},
-      user:{type:Sequelize.JSON,allowNull:true},
+      user:{type:Sequelize.INTEGER,allowNull:true},
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -33,6 +33,15 @@ module.exports = {
       fields: ['repoId'],
       references: {
         table: 'Repos',
+        field: 'id'
+      }
+    });
+    await queryInterface.addConstraint('PRs', {
+      type: 'foreign key',
+      name: 'fk_users_id_prs_user',
+      fields: ['user'],
+      references: {
+        table: 'Users',
         field: 'id'
       }
     });

@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class PR extends Model {
     static associate(models) {
         PR.belongsTo(models.Repo,{foreignKey:'repoId'})
+        PR.belongsTo(models.User,{foreignKey:'user'})
     }
   }
   PR.init(
@@ -17,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       base:{type:DataTypes.JSON,allowNull:true},
       state:{type:DataTypes.STRING,allowNull:false},
       repoId:{type:DataTypes.INTEGER,allowNull:false},
-      user:{type:DataTypes.JSON,allowNull:true}
+      user:{type:DataTypes.INTEGER,allowNull:true}
     },
     {
       sequelize,

@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const models = require('../../../database/models');
 const { Dao } = require('./dao');
 

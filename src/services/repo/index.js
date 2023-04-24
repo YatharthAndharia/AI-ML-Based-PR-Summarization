@@ -9,7 +9,7 @@ const createRepos=async ({user,accessToken})=>{
         auth: accessToken,
       });
     const repoData=await octokit.request(`GET /users/${user.userName}/repos`, {});
-    for(let i=0;i<2;i+=1)
+    for(let i=0;i<1;i+=1)
     {
         // eslint-disable-next-line no-await-in-loop
         const repo=await Repo.create({data:{...(repoData.data[i]),repo_owner:user.id,raw_data:repoData.data[i]}})

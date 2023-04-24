@@ -11,4 +11,9 @@ const getRepos= async (req, res) =>{
       return res.error(error)
     }
   }
-module.exports = { getRepos };
+
+const getRepoStats=async(req,res)=>{
+  const repoStats=await Repo.count({where:{repo_owner:req.user.id}})
+  return res.success(MESSAGES.SUCCESS,repoStats)
+}
+module.exports = { getRepos,getRepoStats };
