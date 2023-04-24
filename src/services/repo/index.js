@@ -9,13 +9,16 @@ const createRepos=async ({user,accessToken})=>{
         auth: accessToken,
       });
     const repoData=await octokit.request(`GET /users/${user.userName}/repos`, {});
-    for(let i=0;i<1;i+=1)
+    for(let i=0;i<2;i+=1)
     {
         // eslint-disable-next-line no-await-in-loop
         const repo=await Repo.create({data:{...(repoData.data[i]),repo_owner:user.id,raw_data:repoData.data[i]}})
-        createCommitWebHook({owner:repoData.data[i].owner.login,repo:repoData.data[i].name,accessToken})
-        createWebHook({owner:repoData.data[i].owner.login,repo:repoData.data[i].name,accessToken})
-        createCommit({accessToken,owner:user.userName,repo:repoData.data[i].name,repoId:repo.dataValues.id})
+        // eslint-disable-next-line no-await-in-loop
+        await createCommitWebHook({owner:repoData.data[i].owner.login,repo:repoData.data[i].name,accessToken})
+        // eslint-disable-next-line no-await-in-loop
+        await createWebHook({owner:repoData.data[i].owner.login,repo:repoData.data[i].name,accessToken})
+        // eslint-disable-next-line no-await-in-loop
+        await createCommit({accessToken,owner:user.userName,repo:repoData.data[i].name,repoId:repo.dataValues.id,userId:user.id})
     }
 }
 module.exports={createRepos}

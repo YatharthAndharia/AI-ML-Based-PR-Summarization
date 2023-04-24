@@ -10,13 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Commit.belongsTo(models.User,{foreignKey:"authorId"})
+      Commit.belongsTo(models.User,{foreignKey:"userId"})
       Commit.belongsTo(models.Repo,{foreignKey:"repoId"})
     }
   }
   Commit.init({
     url: {type:DataTypes.STRING,allowNull:false,unique:true},
-    authorId:{type:DataTypes.INTEGER,allowNull:false},
+    userId:{type:DataTypes.INTEGER,allowNull:false},
     repoId:{type:DataTypes.INTEGER,allowNull:false},
     message:{type:DataTypes.STRING,allowNull:true},
     commitDate:{type:DataTypes.DATE,allowNull:false}

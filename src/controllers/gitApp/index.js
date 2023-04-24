@@ -4,7 +4,6 @@ const { configuration } = require("../../config");
 const CLIENT_ID="de921624ce571949fab9"
 const CLIENT_SECRET="2d5b7a08f2ea8cbec23d588858ee476b86537e85"
 const getAccessToken=async (req,res,next)=>{
-    console.log(req.query.code);
     const params=`?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${req.query.code}`;
     const response=await fetch(`${configuration.github_url}/login/oauth/access_token${params}`,{
         method:"POST",
@@ -13,7 +12,6 @@ const getAccessToken=async (req,res,next)=>{
         }
     })
     const object=await response.json();
-    console.log(object);
     res.json(object)
 }
 module.exports={

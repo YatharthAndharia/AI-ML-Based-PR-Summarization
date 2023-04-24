@@ -80,7 +80,7 @@ class Commit extends Dao {
   }
 
   static countOnDate({where}) {
-    return models.Commit.count({where:{[Op.and]:[models.sequelize.where(models.sequelize.fn('DATE_TRUNC','day',models.sequelize.col('commitDate')),{[Op.eq]:where.commitDate}),{authorId:where.authorId},]}})
+    return models.Commit.count({where:{[Op.and]:[models.sequelize.where(models.sequelize.fn('DATE_TRUNC','day',models.sequelize.col('commitDate')),{[Op.eq]:where.commitDate}),{userId:where.userId},]}})
   }
 }
 

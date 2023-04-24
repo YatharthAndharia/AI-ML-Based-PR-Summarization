@@ -9,7 +9,6 @@ const createWebHook=async({owner,repo,accessToken})=>{
         const octokit = new Octokit({ 
             auth: accessToken,
           });
-        console.log("Owner:",owner,"Repo:",repo,accessToken);
         await octokit.request(`POST /repos/${owner}/${repo}/hooks`, {
             owner: 'OWNER',
             repo: 'REPO',
@@ -43,7 +42,6 @@ const createPR=async({prData})=>{
 }
 
 const addComment=async({prData})=>{
-  console.log(prData.state);
   if(prData.state==="open")
   {
     const user=await User.get({where:{userName:prData.user.login}})  
@@ -53,10 +51,9 @@ const addComment=async({prData})=>{
       const octokit = new Octokit({ 
         auth:user.dataValues.access_token,
       });
-      const res=await octokit.request(`POST /repos/${prData.user.login}/${prData.head.repo.name}/issues/${prData.number}/comments`,{
+      await octokit.request(`POST /repos/${prData.user.login}/${prData.head.repo.name}/issues/${prData.number}/comments`,{
         body:commentData
       })
-      console.log(res.status);
   }
 }
 module.exports={createWebHook,createPR,addComment}

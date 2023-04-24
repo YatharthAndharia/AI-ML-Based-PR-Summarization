@@ -1,7 +1,7 @@
 const {Octokit}=require('octokit');
 const { Commit } = require('../../infrastructure/repositories/commit-dao');
 
-const createCommit=async({accessToken,owner,repo,repoId})=>{
+const createCommit=async({accessToken,owner,repo,repoId,userId})=>{
     const octokit = new Octokit({
         auth: accessToken
       })
@@ -12,7 +12,7 @@ const createCommit=async({accessToken,owner,repo,repoId})=>{
       })
     for(let i=0;i<commits.data.length;i+=1)
     {
-        Commit.create({data:{url:commits.data[i].url,authorId:commits.data[i].author.id,repoId,message:commits.data[i].commit.message,commitDate:commits.data[i].commit.author.date}})
+        Commit.create({data:{url:commits.data[i].url,userId,repoId,message:commits.data[i].commit.message,commitDate:commits.data[i].commit.author.date}})
     }
 }
 const createCommitWebHook=async({owner,repo,accessToken})=>{
