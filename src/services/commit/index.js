@@ -1,5 +1,6 @@
 const {Octokit}=require('octokit');
 const { Commit } = require('../../infrastructure/repositories/commit-dao');
+const { STATUS_CODES } = require('../../utils/constant');
 
 const createCommit=async({accessToken,owner,repo,repoId,userId})=>{
     const octokit = new Octokit({
@@ -37,6 +38,7 @@ const createCommitWebHook=async({owner,repo,accessToken})=>{
             'X-GitHub-Api-Version': '2022-11-28'
           }
         })
+        return {status:STATUS_CODES.SUCCESS}
   } catch (error) {
       console.log(error);
       return error

@@ -3,6 +3,7 @@ const { default: fetch } = require('node-fetch');
 const { PR } = require('../../infrastructure/repositories/pr-dao');
 const { generateComment } = require('../openai');
 const { User } = require('../../infrastructure/repositories/user-dao');
+const { STATUS_CODES } = require('../../utils/constant');
 
 const createWebHook=async({owner,repo,accessToken})=>{
     try {
@@ -26,6 +27,7 @@ const createWebHook=async({owner,repo,accessToken})=>{
               'X-GitHub-Api-Version': '2022-11-28'
             }
           })
+          return {status:STATUS_CODES.SUCCESS}
     } catch (error) {
         console.log(error);
         return error

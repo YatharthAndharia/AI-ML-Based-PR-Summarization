@@ -18,6 +18,13 @@ const requestHelper = (req, res, next) => {
     });
   };
 
+  res.alreadyExists = (message = null) => {
+    res.statusCode = STATUS_CODES.ALREADY_EXIST;
+    res.json({
+      message: message || MESSAGES.ALREADY_EXIST
+    });
+  };
+
   res.error = (message) => {
     res.json({
       message

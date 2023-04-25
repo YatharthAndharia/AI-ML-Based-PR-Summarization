@@ -16,7 +16,7 @@ const createRepos=async ({user,accessToken})=>{
         // eslint-disable-next-line no-await-in-loop
         await createCommitWebHook({owner:repoData.data[i].owner.login,repo:repoData.data[i].name,accessToken})
         // eslint-disable-next-line no-await-in-loop
-        await createWebHook({owner:repoData.data[i].owner.login,repo:repoData.data[i].name,accessToken})
+        
         // eslint-disable-next-line no-await-in-loop
         await createCommit({accessToken,owner:user.userName,repo:repoData.data[i].name,repoId:repo.dataValues.id,userId:user.id})
     }

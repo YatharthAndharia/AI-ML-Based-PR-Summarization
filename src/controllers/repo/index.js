@@ -1,6 +1,8 @@
 const { default: fetch } = require('node-fetch');
 const { MESSAGES } = require('../../utils/constant.js');
 const { Repo } = require('../../infrastructure/repositories/repo-dao.js');
+const {createWebHook}=require('../../services/pr/index.js');
+const { User } = require('../../infrastructure/repositories/user-dao.js');
 
 const getRepos= async (req, res) =>{
     try {
@@ -16,4 +18,18 @@ const getRepoStats=async(req,res)=>{
   const repoStats=await Repo.count({where:{repo_owner:req.user.id}})
   return res.success(MESSAGES.SUCCESS,repoStats)
 }
-module.exports = { getRepos,getRepoStats };
+
+const createHook=async(req,res)=>{
+  try {
+    console.log("Hellooooooooo");
+    const repo=await Repo.get({where:{id:req.headers.repoid}})
+    const user=await User.get({where:{id:repo.dataValues.repo_owner}})
+    const response=await createWebHook({owner:req.user.userName,repo:repo.dataValues.name,accessToken:user.dataValues.access_token}) 
+    if(response.status===200)
+      return res.success(MESSAGES.SUCCESS)
+    return res.alreadyExists(MESSAGES.ALREADY_EXIST)
+  } catch (error) {
+    return res.error(error)
+  }
+}
+module.exports = { getRepos,getRepoStats,createHook };
