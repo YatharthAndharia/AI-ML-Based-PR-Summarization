@@ -21,12 +21,14 @@ const getRepoStats=async(req,res)=>{
 
 const createHook=async(req,res)=>{
   try {
-    console.log("Hellooooooooo");
     const repo=await Repo.get({where:{id:req.headers.repoid}})
     const user=await User.get({where:{id:repo.dataValues.repo_owner}})
     const response=await createWebHook({owner:req.user.userName,repo:repo.dataValues.name,accessToken:user.dataValues.access_token}) 
     if(response.status===200)
+    { 
+      await Repo.update({data:{isHookExists:true},where:{id:req.headers.repoid}})
       return res.success(MESSAGES.SUCCESS)
+    }
     return res.alreadyExists(MESSAGES.ALREADY_EXIST)
   } catch (error) {
     return res.error(error)

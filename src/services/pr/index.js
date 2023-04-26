@@ -41,6 +41,9 @@ const createPR=async({prData})=>{
     {
         await PR.create({data:{...prData,user:prData.user.id,raw_data:prData,repoId:prData.head.repo.id}})
     }
+    else{
+      await PR.update({data:{state:prData.state},where:{id:prData.id}})
+    }
 }
 
 const addComment=async({prData})=>{

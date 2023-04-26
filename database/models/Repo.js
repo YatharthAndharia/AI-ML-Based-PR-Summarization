@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       default_branch:{type:DataTypes.STRING,allowNull:true},
       description:{type:DataTypes.STRING,allowNull:true},
       raw_data:{type:DataTypes.JSON,allowNull:true},
-      repo_owner:{type:DataTypes.INTEGER,allowNull:false}
+      repo_owner:{type:DataTypes.INTEGER,allowNull:false},
+      isHookExists:{type:DataTypes.BOOLEAN,allowNull:false,defaultValue:false}
     },
     {
       sequelize,

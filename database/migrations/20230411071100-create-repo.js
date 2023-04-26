@@ -17,6 +17,7 @@ module.exports = {
       description:{type:Sequelize.STRING,allowNull:true},
       raw_data:{type:Sequelize.JSON,allowNull:true},
       repo_owner:{type:Sequelize.INTEGER,allowNull:false},
+      isHookExists:{type:Sequelize.BOOLEAN,allowNull:false,defaultValue:false},
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

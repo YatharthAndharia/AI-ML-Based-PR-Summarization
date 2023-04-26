@@ -5,7 +5,7 @@ const { createRepos } = require('../repo');
 
 
 const getAccessToken=async (code)=>{
-  const params=`?client_id=${configuration.client_id}&client_secret=${configuration.client_secret}&code=${code}`;
+  const params=`?client_id=${configuration.client_id}&client_secret=${configuration.client_secret}&code=${code}&duration:P10Y`;
   const response=await fetch(`${configuration.github_url}/login/oauth/access_token${params}`,{
       method:"POST",
       headers:{
