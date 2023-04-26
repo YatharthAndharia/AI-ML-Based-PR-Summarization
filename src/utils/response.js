@@ -1,4 +1,4 @@
-const { STATUS_CODES, MESSAGES } = require("./constant");
+const { STATUS_CODES, MESSAGES } = require('./constant');
 
 // eslint-disable-next-line no-unused-vars
 const requestHelper = (req, res, next) => {
@@ -30,7 +30,7 @@ const requestHelper = (req, res, next) => {
       message
     });
   };
-  next()
+  next();
 };
 
-module.exports = { helper:()=>requestHelper };
+module.exports = { helper: () => requestHelper };

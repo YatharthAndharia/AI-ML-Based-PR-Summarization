@@ -3,12 +3,17 @@ const models = require('../../../database/models');
 const { Dao } = require('./dao');
 
 class Commit extends Dao {
-  static create({data}) {
+  static create({ data }) {
     return super.createInstance({ model: models.Commit, data });
   }
 
   static update({ data, where, returning }) {
-    return super.updateInstance({ data, where, model: models.Commit, returning });
+    return super.updateInstance({
+      data,
+      where,
+      model: models.Commit,
+      returning
+    });
   }
 
   static delete({ where }) {
@@ -79,10 +84,23 @@ class Commit extends Dao {
     }
   }
 
-  static countOnDate({where}) {
-    return models.Commit.count({where:{[Op.and]:[models.sequelize.where(models.sequelize.fn('DATE_TRUNC','day',models.sequelize.col('commitDate')),{[Op.eq]:where.commitDate}),{userId:where.userId},]}})
+  static countOnDate({ where }) {
+    return models.Commit.count({
+      where: {
+        [Op.and]: [
+          models.sequelize.where(
+            models.sequelize.fn(
+              'DATE_TRUNC',
+              'day',
+              models.sequelize.col('commitDate')
+            ),
+            { [Op.eq]: where.commitDate }
+          ),
+          { userId: where.userId }
+        ]
+      }
+    });
   }
 }
-
 
 module.exports = { Commit };
