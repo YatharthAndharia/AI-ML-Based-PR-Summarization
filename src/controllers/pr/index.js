@@ -21,4 +21,27 @@ const getPrStats = async (req, res) => {
     return res.error(error);
   }
 };
-module.exports = { prListener, getPrStats };
+const getOpenPrs = async (req, res) => {
+  try {
+    const prs = await PR.getAll({
+      where: { user: req.user.id, state: 'open' }
+    });
+    return res.success(MESSAGES.SUCCESS, prs);
+  } catch (error) {
+    return res.error(error);
+  }
+};
+
+const handleComment = async (req, res) => {
+  try {
+    const pr = await PR.get({ where: { id: req.headers.id } });
+    await PR.update({
+      data: { autoComment: !pr.dataValues.autoComment },
+      where: { id: req.headers.id }
+    });
+    return res.success(MESSAGES.SUCCESS);
+  } catch (error) {
+    return res.error(error);
+  }
+};
+module.exports = { prListener, getPrStats, getOpenPrs, handleComment };

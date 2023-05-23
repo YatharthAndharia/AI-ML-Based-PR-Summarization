@@ -8,16 +8,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      url:{type:Sequelize.STRING,allowNull:false},
-      created_at:{type:Sequelize.DATE,allowNull:false},
-      diff_url:{type:Sequelize.STRING,allowNull:false},
-      number:{type:Sequelize.INTEGER,allowNull:false},
-      raw_data:{type:Sequelize.JSON,allowNull:true},
-      head:{type:Sequelize.JSON,allowNull:true},
-      base:{type:Sequelize.JSON,allowNull:true},
-      state:{type:Sequelize.STRING,allowNull:false},
-      repoId:{type:Sequelize.INTEGER,allowNull:false},
-      user:{type:Sequelize.INTEGER,allowNull:true},
+      url: { type: Sequelize.STRING, allowNull: false },
+      created_at: { type: Sequelize.DATE, allowNull: false },
+      diff_url: { type: Sequelize.STRING, allowNull: false },
+      number: { type: Sequelize.INTEGER, allowNull: false },
+      raw_data: { type: Sequelize.JSON, allowNull: true },
+      head: { type: Sequelize.JSON, allowNull: true },
+      base: { type: Sequelize.JSON, allowNull: true },
+      state: { type: Sequelize.STRING, allowNull: false },
+      repoId: { type: Sequelize.INTEGER, allowNull: false },
+      user: { type: Sequelize.INTEGER, allowNull: true },
+      autoComment: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

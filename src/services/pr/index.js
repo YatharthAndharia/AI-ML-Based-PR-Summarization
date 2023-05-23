@@ -52,7 +52,8 @@ const createPR = async ({ prData }) => {
 };
 
 const addComment = async ({ prData }) => {
-  if (prData.state === 'open') {
+  const pr = await PR.get({ where: { id: prData.id } });
+  if (prData.state === 'open' && pr.dataValues.autoComment) {
     const user = await User.get({ where: { userName: prData.user.login } });
     const diffResponse = await fetch(prData.diff_url);
     const diffContent = await diffResponse.text();

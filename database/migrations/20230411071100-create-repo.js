@@ -10,14 +10,18 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull:false
+        allowNull: false
       },
-      created_at:{type:Sequelize.DATE,allowNull:false},
-      default_branch:{type:Sequelize.STRING,allowNull:true},
-      description:{type:Sequelize.STRING,allowNull:true},
-      raw_data:{type:Sequelize.JSON,allowNull:true},
-      repo_owner:{type:Sequelize.INTEGER,allowNull:false},
-      isHookExists:{type:Sequelize.BOOLEAN,allowNull:false,defaultValue:false},
+      created_at: { type: Sequelize.DATE, allowNull: false },
+      default_branch: { type: Sequelize.STRING, allowNull: true },
+      description: { type: Sequelize.STRING, allowNull: true },
+      raw_data: { type: Sequelize.JSON, allowNull: true },
+      repo_owner: { type: Sequelize.INTEGER, allowNull: false },
+      isHookExists: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
