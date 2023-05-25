@@ -33,7 +33,7 @@ const createWebHook = async ({ owner, repo, accessToken }) => {
 };
 
 const createPR = async ({ prData }) => {
-  const isExist = await PR.get({ where: { repoId: prData.head.repo.id } });
+  const isExist = await PR.get({ where: { id: prData.id } });
   if (!isExist) {
     await PR.create({
       data: {
