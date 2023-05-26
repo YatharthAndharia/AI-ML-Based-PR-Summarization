@@ -10,6 +10,14 @@ const prListener = async (req, res) => {
     res.sendStatus(200);
   }
 };
+const getPrs = async (req, res) => {
+  try {
+    const allPRs = await PR.getAll({ where: { user: req.user.id } });
+    return res.success(MESSAGES.SUCCESS, { allPRs });
+  } catch (error) {
+    return res.error(error);
+  }
+};
 const getPrStats = async (req, res) => {
   try {
     const totalPRs = await PR.count({ where: { user: req.user.id } });
@@ -44,4 +52,4 @@ const handleComment = async (req, res) => {
     return res.error(error);
   }
 };
-module.exports = { prListener, getPrStats, getOpenPrs, handleComment };
+module.exports = { prListener, getPrStats, getOpenPrs, handleComment, getPrs };
