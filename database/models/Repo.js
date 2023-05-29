@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       description: { type: DataTypes.STRING, allowNull: true },
       raw_data: { type: DataTypes.JSON, allowNull: true },
       repo_owner: { type: DataTypes.INTEGER, allowNull: false },
-      isHookExists: {
+      autoComment: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false
+        defaultValue: true
       }
     },
     {

@@ -19,6 +19,19 @@ const getRepoStats = async (req, res) => {
   return res.success(MESSAGES.SUCCESS, repoStats);
 };
 
+const handleRepoCommenting = async (req, res) => {
+  try {
+    const repo = await Repo.get({ where: { id: req.headers.repoid } });
+    await Repo.update({
+      data: { autoComment: !repo.dataValues.autoComment },
+      where: { id: req.headers.repoid }
+    });
+    return res.success(MESSAGES.SUCCESS);
+  } catch (error) {
+    return res.error(error);
+  }
+};
+
 const createHook = async (req, res) => {
   try {
     const repo = await Repo.get({ where: { id: req.headers.repoid } });
@@ -40,4 +53,4 @@ const createHook = async (req, res) => {
     return res.error(error);
   }
 };
-module.exports = { getRepos, getRepoStats, createHook };
+module.exports = { getRepos, getRepoStats, createHook, handleRepoCommenting };

@@ -4,6 +4,7 @@ const { PR } = require('../../infrastructure/repositories/pr-dao');
 const { generateComment } = require('../openai');
 const { User } = require('../../infrastructure/repositories/user-dao');
 const { STATUS_CODES } = require('../../utils/constant');
+const { Repo } = require('../../infrastructure/repositories/repo-dao');
 
 const createWebHook = async ({ owner, repo, accessToken }) => {
   try {
@@ -53,7 +54,12 @@ const createPR = async ({ prData }) => {
 
 const addComment = async ({ prData }) => {
   const pr = await PR.get({ where: { id: prData.id } });
-  if (prData.state === 'open' && pr.dataValues.autoComment) {
+  const repo = await Repo.get({ where: { id: pr.dataValues.repoId } });
+  if (
+    prData.state === 'open' &&
+    pr.dataValues.autoComment &&
+    repo.dataValues.autoComment
+  ) {
     const user = await User.get({ where: { userName: prData.user.login } });
     const diffResponse = await fetch(prData.diff_url);
     const diffContent = await diffResponse.text();
